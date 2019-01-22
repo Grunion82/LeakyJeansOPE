@@ -42,19 +42,19 @@ Leaky Jeans: OPE will flow very similarly to other side-scrolling 2D platformer 
 
 * ### Game World
 * ### Objects:
-  * Non-tangible:
-   * **Background:** sky  
-  * Tangible:
-   * **Platforms**
-   * **Enemies:** spikes(rip your pants), hole(player falls and after a determined time respawns at the closest checkpoint) 
-   * **Power-Ups:** water drop(refills 25% of your water)
-   * **Checkpoints/Finish Line:** flags (white for checkpoints, black & white squares finish line)
+  * #### Non-tangible:
+	* **Background:** sky  
+  * #### Tangible:
+	* **Platforms**
+	* **Enemies:** spikes(rip your pants), hole(player falls and after a determined time respawns at the closest checkpoint) 
+   	* **Power-Ups:** water drop(refills 25% of your water)
+   	* **Checkpoints/Finish Line:** flags (white for checkpoints, black & white squares finish line)
 
 ## Assets: 
 * ### 2D Sprite Art: 
  
 * ### UI Concept Art:
 
-Audio: goofy upbeat 
+* ### Audio: goofy upbeat 
 
 
