@@ -67,5 +67,5 @@ Leaky Jeans: OPE will flow very similarly to other side-scrolling 2D platformer 
 * ### Audio: goofy upbeat 
   * Power-Ups, spikes, checkpoints, and finish line
   * Background audio will be dynamic and will consist mostly of a crisp* style
-	***crisp:** Extended high frequency response, especially with cymbals
+  * ***crisp:** Extended high frequency response, especially with cymbals
 
