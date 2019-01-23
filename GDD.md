@@ -13,28 +13,32 @@ Leaky Jeans: OPE will flow very similarly to other side-scrolling 2D platformer 
 
 
 ## Gameplay Mechanics:
-* **Wetness:** will be gained by water pick-up and lost overtime by running/moving or by hazards
+* ### Wetness: will be gained by water pick-up and lost overtime by running/moving or by hazards
 
 
 * ### Movement/Controls: 
 	Fairly simple controls player; can move left and right and be able to jump
 
+* ### Leaderboard:
+	Compare your score with other players; compete with others for the quickest wet jeans.
+
+* ### Achievements: 
+	Achievements will be included to give an additional bonus challenge to the player. Examples include: finishing levels within a certain time, finishing levels with a certain amount of wetness, etc.
 
 * ### Pick-ups:
-  * Water: increases one's’ wetness
+  * **Water**: increases one's wetness by 25%. Being the one of the main mechanics of the game, it is important for the player to be able to regain any lost water throughout the level.
 
 * ### Hazards:
-  * Holes: death pits that have the player lose a substantial amount of wetness and be sent back a certain point
-  * Spikes: shred the jeans causing quicker loss of water
-  * Oil Spills: will take up a portion of the user’s wetness
+  * **Holes:** death pits that have the player lose a substantial amount of wetness and be sent back a certain point
+  * **Spikes:** shred the jeans causing quicker loss of water
+  * **Oil Spills:** will take up a portion of the user’s wetness
 
 ## Characters:
 * ### Player:
-  * Jeans
+  * **Jeans:** The player will control a pair of jeans named Gene-- a friendly pair of pants who loves water.
 * ### Enemies:
-  * Time
-  * Fan-Fan 
-
+  * **Time:** The main ‘enemy’ of the game is not actually one you can see. Finish the level before time runs out, or Game Over.
+  * **Fan-Fan:** Roaming humanoid fans that will blow air towards the player when they are too close, drying them off and making them lose wetness.
 
 ## Environment:
 * ### Style:
@@ -52,9 +56,15 @@ Leaky Jeans: OPE will flow very similarly to other side-scrolling 2D platformer 
 
 ## Assets: 
 * ### 2D Sprite Art: 
+	![Jeans Sprite](https://cdn.discordapp.com/attachments/420020969071968270/537478660182114305/pants.png)
+	(Figure 1)
+	The 2D sprites for the pants are currently in the   process of design but will look similar to Figure 1. 
  
 * ### UI Concept Art:
+	![Menu Screen Concept](https://cdn.discordapp.com/attachments/420020969071968270/537471300386422784/OPE_LJ.png)
 
 * ### Audio: goofy upbeat 
-
+  * Power-Ups, spikes, checkpoints, and finish line
+  * Background audio will be dynamic and will consist mostly of a crisp* style
+  * ***crisp:** Extended high frequency response, especially with cymbals
 
