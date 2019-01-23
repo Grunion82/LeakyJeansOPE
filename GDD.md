@@ -57,6 +57,7 @@ Leaky Jeans: OPE will flow very similarly to other side-scrolling 2D platformer 
 ## Assets: 
 * ### 2D Sprite Art: 
 	![Jeans Sprite](https://cdn.discordapp.com/attachments/420020969071968270/537478660182114305/pants.png)
+	
 	(Figure 1)
 	The 2D sprites for the pants are currently in the   process of design but will look similar to Figure 1. 
  
@@ -66,5 +67,5 @@ Leaky Jeans: OPE will flow very similarly to other side-scrolling 2D platformer 
 * ### Audio: goofy upbeat 
   * Power-Ups, spikes, checkpoints, and finish line
   * Background audio will be dynamic and will consist mostly of a crisp* style
-  * ***crisp:** Extended high frequency response, especially with cymbals
+	***crisp:** Extended high frequency response, especially with cymbals
 
