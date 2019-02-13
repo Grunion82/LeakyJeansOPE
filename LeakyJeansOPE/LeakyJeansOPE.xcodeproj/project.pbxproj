@@ -21,6 +21,13 @@
 		0CE7B0802214C9370000E3A6 /* leveldb-library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE7B07E2214C9370000E3A6 /* leveldb-library.framework */; };
 		0CE7B0832214C9680000E3A6 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE7B0812214C9680000E3A6 /* FirebaseAnalytics.framework */; };
 		0CE7B0842214C9680000E3A6 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE7B0822214C9680000E3A6 /* FirebaseCore.framework */; };
+		0CE7B08F2214D0E60000E3A6 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE7B0892214D0E50000E3A6 /* GoogleUtilities.framework */; };
+		0CE7B0902214D0E60000E3A6 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE7B08A2214D0E50000E3A6 /* FirebaseCoreDiagnostics.framework */; };
+		0CE7B0912214D0E60000E3A6 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE7B08B2214D0E50000E3A6 /* FirebaseInstanceID.framework */; };
+		0CE7B0922214D0E60000E3A6 /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE7B08C2214D0E60000E3A6 /* nanopb.framework */; };
+		0CE7B0932214D0E60000E3A6 /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE7B08D2214D0E60000E3A6 /* FIRAnalyticsConnector.framework */; };
+		0CE7B0942214D0E60000E3A6 /* GoogleAppMeasurement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE7B08E2214D0E60000E3A6 /* GoogleAppMeasurement.framework */; };
+		0CE7B0962214D3870000E3A6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0CE7B0952214D3870000E3A6 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,8 +68,15 @@
 		0CE7B07E2214C9370000E3A6 /* leveldb-library.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = "leveldb-library.framework"; sourceTree = "<group>"; };
 		0CE7B0812214C9680000E3A6 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseAnalytics.framework; sourceTree = "<group>"; };
 		0CE7B0822214C9680000E3A6 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = "<group>"; };
-		0CE7B0852214CA010000E3A6 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
-		0CE7B0862214CA1C0000E3A6 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		0CE7B0872214D0530000E3A6 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
+		0CE7B0882214D0610000E3A6 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		0CE7B0892214D0E50000E3A6 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleUtilities.framework; sourceTree = "<group>"; };
+		0CE7B08A2214D0E50000E3A6 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
+		0CE7B08B2214D0E50000E3A6 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
+		0CE7B08C2214D0E60000E3A6 /* nanopb.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = nanopb.framework; sourceTree = "<group>"; };
+		0CE7B08D2214D0E60000E3A6 /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
+		0CE7B08E2214D0E60000E3A6 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleAppMeasurement.framework; sourceTree = "<group>"; };
+		0CE7B0952214D3870000E3A6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +86,13 @@
 			files = (
 				0CE7B0842214C9680000E3A6 /* FirebaseCore.framework in Frameworks */,
 				0CE7B07F2214C9370000E3A6 /* FirebaseDatabase.framework in Frameworks */,
+				0CE7B0942214D0E60000E3A6 /* GoogleAppMeasurement.framework in Frameworks */,
+				0CE7B0922214D0E60000E3A6 /* nanopb.framework in Frameworks */,
 				0CE7B0802214C9370000E3A6 /* leveldb-library.framework in Frameworks */,
+				0CE7B0932214D0E60000E3A6 /* FIRAnalyticsConnector.framework in Frameworks */,
+				0CE7B0902214D0E60000E3A6 /* FirebaseCoreDiagnostics.framework in Frameworks */,
+				0CE7B0912214D0E60000E3A6 /* FirebaseInstanceID.framework in Frameworks */,
+				0CE7B08F2214D0E60000E3A6 /* GoogleUtilities.framework in Frameworks */,
 				0CE7B0832214C9680000E3A6 /* FirebaseAnalytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -117,8 +137,15 @@
 		0CE7B0482214C5F10000E3A6 /* LeakyJeansOPE */ = {
 			isa = PBXGroup;
 			children = (
-				0CE7B0862214CA1C0000E3A6 /* module.modulemap */,
-				0CE7B0852214CA010000E3A6 /* Firebase.h */,
+				0CE7B0952214D3870000E3A6 /* GoogleService-Info.plist */,
+				0CE7B08D2214D0E60000E3A6 /* FIRAnalyticsConnector.framework */,
+				0CE7B08A2214D0E50000E3A6 /* FirebaseCoreDiagnostics.framework */,
+				0CE7B08B2214D0E50000E3A6 /* FirebaseInstanceID.framework */,
+				0CE7B08E2214D0E60000E3A6 /* GoogleAppMeasurement.framework */,
+				0CE7B0892214D0E50000E3A6 /* GoogleUtilities.framework */,
+				0CE7B08C2214D0E60000E3A6 /* nanopb.framework */,
+				0CE7B0872214D0530000E3A6 /* Firebase.h */,
+				0CE7B0882214D0610000E3A6 /* module.modulemap */,
 				0CE7B0812214C9680000E3A6 /* FirebaseAnalytics.framework */,
 				0CE7B0822214C9680000E3A6 /* FirebaseCore.framework */,
 				0CE7B07D2214C9370000E3A6 /* FirebaseDatabase.framework */,
@@ -263,6 +290,7 @@
 				0CE7B0572214C5F20000E3A6 /* Assets.xcassets in Resources */,
 				0CE7B05A2214C5F20000E3A6 /* LaunchScreen.storyboard in Resources */,
 				0CE7B04E2214C5F10000E3A6 /* Actions.sks in Resources */,
+				0CE7B0962214D3870000E3A6 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
