@@ -1,0 +1,6 @@
+framework module Pods_xCode9DatabaseExample {
+  umbrella header "Pods-xCode9DatabaseExample-umbrella.h"
+
+  export *
+  module * { export * }
+}
