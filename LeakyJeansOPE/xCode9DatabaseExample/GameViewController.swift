@@ -48,6 +48,7 @@ class GameViewController: UIViewController {
         // writing (will fail because I have turned off write access, but the implementation is correct)
         database.add(action: jumpAction)
         
+        
         // nothing below here is related to Databases.
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
