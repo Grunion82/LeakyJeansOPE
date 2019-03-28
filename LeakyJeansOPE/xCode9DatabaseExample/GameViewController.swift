@@ -31,22 +31,22 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //wrapper i wrote for firebase db very simple. Check this class for implementation details
-        let database = RealtimeDB()
-        var actionsDatabaseSnapshot: [String: Any?] = [:]
-        
-        // reading (uses a closure because it is an asynchronous action)
-        database.getActions { (actionsDictionary) in
-            actionsDatabaseSnapshot = actionsDictionary
-            print("second \(actionsDatabaseSnapshot)")
-        }
-        print("first \(actionsDatabaseSnapshot)")
-        
-        // struct representing a custom class
-        let jumpAction = Action.init(name: "jump", castType: "instant", duration: 2.0, effects: nil, type: "ability")
-        
-        // writing (will fail because I have turned off write access, but the implementation is correct)
-        database.add(action: jumpAction)
+//        //wrapper i wrote for firebase db very simple. Check this class for implementation details
+//        let database = RealtimeDB()
+//        var actionsDatabaseSnapshot: [String: Any?] = [:]
+//
+//        // reading (uses a closure because it is an asynchronous action)
+//        database.getActions { (actionsDictionary) in
+//            actionsDatabaseSnapshot = actionsDictionary
+//            print("second \(actionsDatabaseSnapshot)")
+//        }
+//        print("first \(actionsDatabaseSnapshot)")
+//
+//        // struct representing a custom class
+//        let jumpAction = Action.init(name: "jump", castType: "instant", duration: 2.0, effects: nil, type: "ability")
+//
+//        // writing (will fail because I have turned off write access, but the implementation is correct)
+//        database.add(action: jumpAction)
         
         
         // nothing below here is related to Databases.
@@ -73,7 +73,8 @@ class GameViewController: UIViewController {
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
+            //Changed this to landscape so that the app loads Sideways for the game's sake.
+            return .landscape
         } else {
             return .all
         }
