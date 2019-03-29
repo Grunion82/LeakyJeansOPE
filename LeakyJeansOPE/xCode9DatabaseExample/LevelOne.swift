@@ -15,6 +15,9 @@ class LevelOne: SKScene {
     let playerJeans = SKSpriteNode(imageNamed: "JeanSprite1.png")
         
         override func didMove(to view: SKView) {
+            for view in (self.view?.subviews)! {
+                view.removeFromSuperview()
+            }
             
             addChild(playerJeans)
             playerJeans.size = CGSize(width: 75, height: 100)

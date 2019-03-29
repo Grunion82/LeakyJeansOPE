@@ -49,8 +49,8 @@ class GameScene: SKScene {
         optionsButton.addTarget(self, action: #selector(GameScene.buttonAction(_:)), for: .touchUpInside)
         self.view?.addSubview(optionsButton)
         
-        buildPlayer()
-       // animatePLayer()
+        //buildPlayer()
+        //animatePLayer()
     }
     
     func buildPlayer() {
@@ -195,9 +195,9 @@ class GameScene: SKScene {
             if let newScene = LevelOne(fileNamed: "LevelOne") {
                 newScene.scaleMode = .aspectFill
                 let transition = SKTransition.moveIn(with: .right, duration: 0.25)
+                playButton.removeFromSuperview()
+                optionsButton.removeFromSuperview()
                 self.view?.presentScene(newScene, transition: transition)
-                playButton.isHidden = true
-                optionsButton.isHidden = true
             }
         }
         else if(sender == optionsButton) {
