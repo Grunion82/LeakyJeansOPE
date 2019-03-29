@@ -31,6 +31,20 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //sprite changes here! N
+        if let view = view as? SKView{
+            
+            let scene = GameScene(size: view.bounds.size)
+            
+            scene.scaleMode = .resizeFill
+            view.ignoresSiblingOrder = true
+            view.showsFPS = true
+            view.showsNodeCount = true
+            view.presentScene(scene)
+            
+            
+        }
+        
 //        //wrapper i wrote for firebase db very simple. Check this class for implementation details
 //        let database = RealtimeDB()
 //        var actionsDatabaseSnapshot: [String: Any?] = [:]
