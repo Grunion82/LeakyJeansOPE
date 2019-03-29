@@ -15,55 +15,34 @@ class GameScene: SKScene {
     private var spinnyNode : SKShapeNode?
     private var button: UIButton?
     
+    //Play button object
+    let playButton = UIButton(frame: CGRect(x: 225, y: 145, width: 225, height: 60))
+    //Options button object
+    let optionsButton = UIButton(frame: CGRect(x: 260, y: 220, width: 160, height: 60))
+    
+    
     override func didMove(to view: SKView) {
         
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
         //Create the background object and give it to the SceneGraph-- Change size to be drawn in display
         let background = SKSpriteNode(imageNamed: "MainMenu.png")
         addChild(background)
         background.size = CGSize(width: size.width, height: (size.height / 2) - 250)
-        //background.position = CGPoint(x: size.width / 2, y: size.height / 2)
         
-       
-        
-        
-        
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
-        
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
+        //Code for PlayButton. Loading and Positioning
+        playButton.setTitle("PlayButton", for: .normal)
+        if let playButtonImg = UIImage(named: "PlayButton.png") {
+            playButton.setImage(playButtonImg, for: .normal)
         }
-//        // Get label node from scene and store it for use later
-//        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-//        if let label = self.label {
-//            label.alpha = 0.0
-//            label.run(SKAction.fadeIn(withDuration: 2.0))
-//        }
-//
-//        // Create shape node to use during mouse interaction
-//        let w = (self.size.width + self.size.height) * 0.05
-//        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
-//
-//        if let spinnyNode = self.spinnyNode {
-//            spinnyNode.lineWidth = 2.5
-//
-//            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-//            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-//                                              SKAction.fadeOut(withDuration: 0.5),
-//                                              SKAction.removeFromParent()]))
-//        }
+        playButton.addTarget(self, action: #selector(GameScene.buttonAction(_:)), for: .touchUpInside)
+        self.view?.addSubview(playButton)
+        
+        //Code for OptionsButton. Loading and Positioning
+        optionsButton.setTitle("OptionsButton", for: .normal)
+        if let optionsButtonImg = UIImage(named: "OptionsButton.png") {
+            optionsButton.setImage(optionsButtonImg, for: .normal)
+        }
+        optionsButton.addTarget(self, action: #selector(GameScene.buttonAction(_:)), for: .touchUpInside)
+        self.view?.addSubview(optionsButton)
     }
     
     
@@ -114,5 +93,23 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+    }
+    
+    @objc func buttonAction(_ sender: UIButton!) {
+        if(sender == playButton){
+            print("play button")
+            
+            //Loads the LevelOne scene
+            if let newScene = LevelOne(fileNamed: "LevelOne") {
+                newScene.scaleMode = .aspectFill
+                let transition = SKTransition.moveIn(with: .right, duration: 0.25)
+                self.view?.presentScene(newScene, transition: transition)
+                playButton.isHidden = true
+                optionsButton.isHidden = true
+            }
+        }
+        else if(sender == optionsButton) {
+            print("options button")
+        }
     }
 }
