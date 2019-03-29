@@ -15,7 +15,14 @@ class GameScene: SKScene {
     private var spinnyNode : SKShapeNode?
     private var button: UIButton?
     
+    
+    private var playerSprite = SKSpriteNode()
+    private var playerWalkingFrames: [SKTexture] = []
+    
+
     override func didMove(to view: SKView) {
+        backgroundColor = .orange
+       
         
         // Get label node from scene and store it for use later
         self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
@@ -64,8 +71,89 @@ class GameScene: SKScene {
 //                                              SKAction.fadeOut(withDuration: 0.5),
 //                                              SKAction.removeFromParent()]))
 //        }
+        
+        
+        buildPlayer()
+       // animatePLayer()
     }
     
+    func buildPlayer() {
+        let playerAnimatedAtlas = SKTextureAtlas(named: "BearImages")
+        var walkFrames: [SKTexture] = []
+        
+        let numImages = playerAnimatedAtlas.textureNames.count
+        for i in 1...numImages {
+            let playerTextureName = "bear\(i)"
+            walkFrames.append(playerAnimatedAtlas.textureNamed(playerTextureName))
+        }
+        playerWalkingFrames = walkFrames
+        
+        let firstFrameTexture = playerWalkingFrames[0]
+        playerSprite = SKSpriteNode(texture: firstFrameTexture)
+        playerSprite.position = CGPoint(x: frame.midX, y: frame.midY)
+        addChild(playerSprite)
+
+    }
+    
+    func animatePLayer() {
+        playerSprite.run(SKAction.repeatForever(
+            SKAction.animate(with: playerWalkingFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"walkingInPlaceBear")
+    }
+    
+    
+    func playerMoveEnd(){
+        
+        playerSprite.removeAllActions()//this stops animation N
+        
+    }
+    
+    func movePlayer(location: CGPoint){//temporal move player it can move anywhere on teh screen N
+        
+            // 1
+            var multiplierForDirection: CGFloat
+            
+            // 2
+            let bearSpeed = frame.size.width / 3.0
+            
+            // 3
+            let moveDifference = CGPoint(x: location.x - playerSprite.position.x, y: location.y - playerSprite.position.y)
+            let distanceToMove = sqrt(moveDifference.x * moveDifference.x + moveDifference.y * moveDifference.y)
+            
+            // 4
+            let moveDuration = distanceToMove / bearSpeed
+            
+            // 5
+            if moveDifference.x < 0 {
+                multiplierForDirection = 1.0
+            } else {
+                multiplierForDirection = -1.0
+            }
+            playerSprite.xScale = abs(playerSprite.xScale) * multiplierForDirection
+        
+        
+
+        // 1
+        if playerSprite.action(forKey: "walkingInPlaceBear") == nil {
+            // if legs are not moving, start them
+            animatePLayer()
+        }
+        
+        // 2
+        let moveAction = SKAction.move(to: location, duration:(TimeInterval(moveDuration)))
+        
+        // 3
+        let doneAction = SKAction.run({ [weak self] in
+            self?.playerMoveEnd()
+        })
+        
+        // 4
+        let moveActionWithDone = SKAction.sequence([moveAction, doneAction])
+        playerSprite.run(moveActionWithDone, withKey:"bearMoving")
+
+        
+    }
+
+
     
     func touchDown(atPoint pos : CGPoint) {
         if let n = self.spinnyNode?.copy() as! SKShapeNode? {
@@ -105,6 +193,13 @@ class GameScene: SKScene {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+        
+            let touch = touches.first!
+            let location = touch.location(in: self)
+        
+        movePlayer(location: location)
+
+        
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -115,4 +210,6 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
     }
+    
+
 }
