@@ -24,14 +24,33 @@ class GameScene: SKScene {
     private var playerSprite = SKSpriteNode()
     private var playerWalkingFrames: [SKTexture] = []
     
+
     override func didMove(to view: SKView) {
         backgroundColor = .orange
-       
+       //updated background of the game
+        let background = SKSpriteNode(imageNamed: "background.png")
+        background.position = CGPoint(x: 1, y: 1)
+        background.anchorPoint = CGPoint(x: 0.5, y: 0.5)//anchor center of teh screen default
+        background.zPosition = -1
+        background.size = CGSize(width: size.width, height: size.height/2)
+        addChild(background)
         
+
         //Create the background object and give it to the SceneGraph-- Change size to be drawn in display
         let background = SKSpriteNode(imageNamed: "MainMenu.png")
         addChild(background)
         background.size = CGSize(width: size.width, height: (size.height / 2) - 250)
+
+        // Get label node from scene and store it for use later
+        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
+        if let label = self.label {
+            label.alpha = 0.0
+            label.run(SKAction.fadeIn(withDuration: 2.0))
+        }
+
+        
+       
+
         
         //Code for PlayButton. Loading and Positioning
         playButton.setTitle("PlayButton", for: .normal)
@@ -53,14 +72,16 @@ class GameScene: SKScene {
         //animatePLayer()
     }
     
+
+    
+    
     func buildPlayer() {
-        let playerAnimatedAtlas = SKTextureAtlas(named: "BearImages")
-        var walkFrames: [SKTexture] = []
+        var walkFrames: [SKTexture] = [SKTexture(imageNamed: "tile000"),SKTexture(imageNamed: "tile001"),SKTexture(imageNamed: "tile002"),SKTexture(imageNamed: "tile003"),SKTexture(imageNamed: "tile004"),SKTexture(imageNamed: "tile005"),SKTexture(imageNamed: "tile006"),SKTexture(imageNamed: "tile007"),SKTexture(imageNamed: "tile008"),SKTexture(imageNamed: "tile009"),SKTexture(imageNamed: "tile010"),SKTexture(imageNamed: "tile011"),SKTexture(imageNamed: "tile012"),SKTexture(imageNamed: "tile013"),SKTexture(imageNamed: "tile014"),SKTexture(imageNamed: "tile015")]
         
-        let numImages = playerAnimatedAtlas.textureNames.count
+
+        let numImages = walkFrames.count
         for i in 1...numImages {
-            let playerTextureName = "bear\(i)"
-            walkFrames.append(playerAnimatedAtlas.textureNamed(playerTextureName))
+            walkFrames.append(walkFrames[i])
         }
         playerWalkingFrames = walkFrames
         
