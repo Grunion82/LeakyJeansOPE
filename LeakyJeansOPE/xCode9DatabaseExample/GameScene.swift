@@ -19,7 +19,7 @@ class GameScene: SKScene {
     let playButton = UIButton(frame: CGRect(x: 225, y: 145, width: 225, height: 60))
     //Options button object
     let optionsButton = UIButton(frame: CGRect(x: 260, y: 220, width: 160, height: 60))
-    
+  
     
     private var playerSprite = SKSpriteNode()
     private var playerWalkingFrames: [SKTexture] = []
@@ -28,19 +28,20 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         backgroundColor = .orange
        //updated background of the game
-        let background = SKSpriteNode(imageNamed: "background.png")
-        background.position = CGPoint(x: 1, y: 1)
-        background.anchorPoint = CGPoint(x: 0.5, y: 0.5)//anchor center of teh screen default
-        background.zPosition = -1
-        background.size = CGSize(width: size.width, height: size.height/2)
-        addChild(background)
+//        let background = SKSpriteNode(imageNamed: "background.png")
+//        background.position = CGPoint(x: 1, y: 1)
+//        background.anchorPoint = CGPoint(x: 0.5, y: 0.5)//anchor center of teh screen default
+//        background.zPosition = -1
+//        background.size = CGSize(width: size.width, height: size.height/2)
+//        addChild(background)
         
 
         //Create the background object and give it to the SceneGraph-- Change size to be drawn in display
         let background = SKSpriteNode(imageNamed: "MainMenu.png")
         addChild(background)
         background.size = CGSize(width: size.width, height: (size.height / 2) - 250)
-
+        background.zPosition = -1
+        
         // Get label node from scene and store it for use later
         self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
         if let label = self.label {
@@ -68,7 +69,7 @@ class GameScene: SKScene {
         optionsButton.addTarget(self, action: #selector(GameScene.buttonAction(_:)), for: .touchUpInside)
         self.view?.addSubview(optionsButton)
         
-        //buildPlayer()
+        buildPlayer()
         //animatePLayer()
     }
     

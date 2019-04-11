@@ -10,13 +10,18 @@ import UIKit
 import GameKit
 import SpriteKit
 
+enum Animation {
+    case idle,walking,jumping, tDamage
+}
+
 class LevelOne: SKScene {
     
     //Sprite for Jeans loaded as a SKTexture
     let jeansSprite = SKTexture(imageNamed: "JeanSprite1.png")
     //Sprite for Platform loaded as a SKTexture
     let platformSprite = SKTexture(imageNamed: "platform.png")
-    let playerJeans = SKSpriteNode(imageNamed: "JeanSprite1.png") //Not loading with SKTexture(jeansSprite) to avoid "self not available" error
+    //keep track of current anim
+    var Currentanim = Animation.idle
     
     var moveLeft = false
     var moveRight = false
@@ -30,16 +35,25 @@ class LevelOne: SKScene {
     let rightArrowButton = UIButton(frame: CGRect(x: 100, y: 275, width: 150, height: 150))
     //Up Arrow button object
     let upArrowButton = UIButton(frame: CGRect(x: 600, y: 275, width: 150, height: 150))
+    //player sprite
+    private var playerJeans = SKSpriteNode()
+    //player frames
+    private var playerWalkingFrames: [SKTexture] = []
+    private var playerJumpingFrames: [SKTexture] = []
+    private var playeridleFrames: [SKTexture] = []
+    private var playerTakingDmgFrames: [SKTexture] = []
+    
+            var walkFrames: [SKTexture] = [SKTexture(imageNamed: "walk000"),SKTexture(imageNamed: "walk001"),SKTexture(imageNamed: "walk002"),SKTexture(imageNamed: "walk003"),SKTexture(imageNamed: "walk004"),SKTexture(imageNamed: "walk005"),SKTexture(imageNamed: "walk006"),SKTexture(imageNamed: "walk007")]
     
     
         override func didMove(to view: SKView) {
             for view in (self.view?.subviews)! {
                 view.removeFromSuperview()
             }
-            
+            buildPlayer(walkFrames)
             //Player code-- Adding to SceneGraph and initializing
-            addChild(playerJeans)
-            playerJeans.size = CGSize(width: 75, height: 100)
+            //addChild(playerJeans)
+            playerJeans.size = CGSize(width: 100, height: 100)
             playerJeans.position = CGPoint(x: 0, y: 50)
             let constraints: NSArray = [SKConstraint.zRotation(SKRange(lowerLimit: 0, upperLimit: 0))]
             playerJeans.constraints = (constraints as! [SKConstraint])
@@ -79,6 +93,30 @@ class LevelOne: SKScene {
             upArrowButton.addTarget(self, action: #selector(LevelOne.buttonAction(_:)), for: .touchDown)
             self.view?.addSubview(upArrowButton)
             
+            
+            switch Currentanim {
+            case .idle:
+                playerJeans.run(SKAction.repeatForever(
+                    SKAction.animate(with: playeridleFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"idle")
+                break;
+            case .walking:
+                playerJeans.run(SKAction.repeatForever(
+                    SKAction.animate(with: playerWalkingFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"walking")
+                break;
+            case.jumping:
+                playerJeans.run(SKAction.repeatForever(
+                    SKAction.animate(with: playerJumpingFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"jumping")
+                break;
+            case .tDamage:
+                playerJeans.run(SKAction.repeatForever(
+                    SKAction.animate(with: playerTakingDmgFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"takingDmg")
+                break;
+            default:
+                Currentanim = .idle
+                break;
+            }
+            
+            //animatePLayer()
         }
         
         
@@ -146,6 +184,30 @@ class LevelOne: SKScene {
             moveRight = false
         }
 
+    }
+    
+    func buildPlayer(_ frames: [SKTexture]) {
+
+        var dummy:[SKTexture]  = frames
+        
+        let numImages = dummy.count
+        for i in 1...numImages {
+            dummy.append(dummy[i])
+        }
+        playerWalkingFrames = dummy
+        
+        let firstFrameTexture = dummy[0]
+        playerJeans = SKSpriteNode(texture: firstFrameTexture)
+        playerJeans.position = CGPoint(x: frame.midX, y: frame.midY)
+        addChild(playerJeans)
+        
+    }
+    
+    
+
+    func animatePLayer() {
+        playerJeans.run(SKAction.repeatForever(
+            SKAction.animate(with: playerWalkingFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"walking")
     }
     
     
