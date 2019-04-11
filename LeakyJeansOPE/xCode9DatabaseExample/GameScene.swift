@@ -189,7 +189,6 @@ class GameScene: SKScene {
     
     @objc func buttonAction(_ sender: UIButton!) {
         if(sender == playButton){
-            print("play button")
             
             //Loads the LevelOne scene
             if let newScene = LevelOne(fileNamed: "LevelOne") {
@@ -201,7 +200,7 @@ class GameScene: SKScene {
             }
         }
         else if(sender == optionsButton) {
-            print("options button")
+            
         }
     }
 }

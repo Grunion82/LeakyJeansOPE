@@ -18,6 +18,9 @@ class LevelOne: SKScene {
     let platformSprite = SKTexture(imageNamed: "platform.png")
     let playerJeans = SKSpriteNode(imageNamed: "JeanSprite1.png") //Not loading with SKTexture(jeansSprite) to avoid "self not available" error
     
+    var moveLeft = false
+    var moveRight = false
+    
     //Sprite for buttons saved as a string
     let buttonImage = "arrowimage.png"
     
@@ -55,7 +58,8 @@ class LevelOne: SKScene {
             if let leftArrowButtonImg = UIImage(named: buttonImage) {
                 leftArrowButton.setImage(leftArrowButtonImg, for: .normal)
             }
-            leftArrowButton.addTarget(self, action: #selector(LevelOne.buttonStay(_:)), for: .touchDown)
+            leftArrowButton.addTarget(self, action: #selector(LevelOne.buttonAction(_:)), for: .touchDown)
+            leftArrowButton.addTarget(self, action: #selector(LevelOne.buttonExit(_:)), for: .touchUpInside)
             self.view?.addSubview(leftArrowButton)
             
             //Right Arrow code-- initialization
@@ -63,7 +67,8 @@ class LevelOne: SKScene {
             if let rightArrowButtonImg = UIImage(named: buttonImage) {
                 rightArrowButton.setImage(rightArrowButtonImg, for: .normal)
             }
-            rightArrowButton.addTarget(self, action: #selector(LevelOne.buttonStay(_:)), for: .touchDown)
+            rightArrowButton.addTarget(self, action: #selector(LevelOne.buttonAction(_:)), for: .touchDown)
+            rightArrowButton.addTarget(self, action: #selector(LevelOne.buttonExit(_:)), for: .touchUpInside)
             self.view?.addSubview(rightArrowButton)
             
             //Up Arrow code-- initialization
@@ -109,25 +114,38 @@ class LevelOne: SKScene {
         
         override func update(_ currentTime: TimeInterval) {
             // Called before each frame is rendered
+            if(moveLeft == true) {
+                playerJeans.position.x += -1.0
+            }
+            if(moveRight == true) {
+                playerJeans.position.x += 1.0
+            }
         }
 
     //Button Press
     @objc func buttonAction(_ sender: UIButton!) {
         if(sender == upArrowButton) {
-            print("up")
             playerJeans.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 150))
+        }
+        if(sender == leftArrowButton){
+            moveLeft = true
+        }
+            
+        if(sender == rightArrowButton) {
+            moveRight = true
         }
     }
     
     //Button Stay
-    @objc func buttonStay(_ sender: UIButton!) {
+    @objc func buttonExit(_ sender: UIButton!) {
         if(sender == leftArrowButton){
-            print("left")
+            moveLeft = false
         }
-            
-        else if(sender == rightArrowButton) {
-            print("right")
+        
+        if(sender == rightArrowButton) {
+            moveRight = false
         }
+
     }
     
     
