@@ -12,6 +12,8 @@ import SpriteKit
 
 class LevelOne: SKScene {
     
+    let myCamera = SKCameraNode(fileNamed: "LevelOne")
+    
     //Sprite for Jeans loaded as a SKTexture
     let jeansSprite = SKTexture(imageNamed: "JeanSprite1.png")
     //Sprite for Platform loaded as a SKTexture
@@ -36,6 +38,7 @@ class LevelOne: SKScene {
             for view in (self.view?.subviews)! {
                 view.removeFromSuperview()
             }
+            camera = myCamera
             
             //Player code-- Adding to SceneGraph and initializing
             addChild(playerJeans)
@@ -114,14 +117,6 @@ class LevelOne: SKScene {
         
         override func update(_ currentTime: TimeInterval) {
             // Called before each frame is rendered
-            //Moves player left
-            if(moveLeft == true) {
-                playerJeans.position.x += -4.0
-            }
-            //Moves player right
-            if(moveRight == true) {
-                playerJeans.position.x += 4.0
-            }
         }
 
     //Button Press
@@ -138,7 +133,7 @@ class LevelOne: SKScene {
         }
     }
     
-    //Button Stay
+    //Button Exit
     @objc func buttonExit(_ sender: UIButton!) {
         if(sender == leftArrowButton){
             moveLeft = false

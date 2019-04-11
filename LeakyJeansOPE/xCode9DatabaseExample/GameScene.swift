@@ -27,19 +27,12 @@ class GameScene: SKScene {
 
     override func didMove(to view: SKView) {
         backgroundColor = .orange
-       //updated background of the game
-        let background = SKSpriteNode(imageNamed: "background.png")
-        background.position = CGPoint(x: 1, y: 1)
-        background.anchorPoint = CGPoint(x: 0.5, y: 0.5)//anchor center of teh screen default
-        background.zPosition = -1
-        background.size = CGSize(width: size.width, height: size.height/2)
-        addChild(background)
-        
 
         //Create the background object and give it to the SceneGraph-- Change size to be drawn in display
         let background = SKSpriteNode(imageNamed: "MainMenu.png")
         addChild(background)
         background.size = CGSize(width: size.width, height: (size.height / 2) - 250)
+        background.zPosition = -1
 
         // Get label node from scene and store it for use later
         self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
@@ -47,10 +40,6 @@ class GameScene: SKScene {
             label.alpha = 0.0
             label.run(SKAction.fadeIn(withDuration: 2.0))
         }
-
-        
-       
-
         
         //Code for PlayButton. Loading and Positioning
         playButton.setTitle("PlayButton", for: .normal)
@@ -68,7 +57,7 @@ class GameScene: SKScene {
         optionsButton.addTarget(self, action: #selector(GameScene.buttonAction(_:)), for: .touchUpInside)
         self.view?.addSubview(optionsButton)
         
-        //buildPlayer()
+        buildPlayer()
         //animatePLayer()
     }
     
@@ -209,8 +198,7 @@ class GameScene: SKScene {
     }
     
     @objc func buttonAction(_ sender: UIButton!) {
-        if(sender == playButton){
-            
+        if(sender == playButton){            
             //Loads the LevelOne scene
             if let newScene = LevelOne(fileNamed: "LevelOne") {
                 newScene.scaleMode = .aspectFill
