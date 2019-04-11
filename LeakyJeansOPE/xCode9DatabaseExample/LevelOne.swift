@@ -114,11 +114,13 @@ class LevelOne: SKScene {
         
         override func update(_ currentTime: TimeInterval) {
             // Called before each frame is rendered
+            //Moves player left
             if(moveLeft == true) {
-                playerJeans.position.x += -1.0
+                playerJeans.position.x += -4.0
             }
+            //Moves player right
             if(moveRight == true) {
-                playerJeans.position.x += 1.0
+                playerJeans.position.x += 4.0
             }
         }
 
