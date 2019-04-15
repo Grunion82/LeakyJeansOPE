@@ -10,15 +10,22 @@ import UIKit
 import GameKit
 import SpriteKit
 
-class LevelOne: SKScene {
+enum CollisionTag: UInt32 {
+    
+    case player = 0b01
+    case platform = 0b10
+    
+}
+
+class LevelOne: SKScene, SKPhysicsContactDelegate {
     
     let myCamera = SKCameraNode()
     
+    //Background for the Scene
+    let background = SKSpriteNode(imageNamed: "background.png")
+    
     //Object that the player will be controlling
     var playerJeans: Jeans = Jeans()
-    
-    //Sprite for buttons saved as a string
-    let buttonImage = "arrowimage.png"
     
     //Left Arrow button object
     let leftArrowButton = UIButton(frame: CGRect(x: -15, y: 275, width: 150, height: 150))
@@ -32,21 +39,41 @@ class LevelOne: SKScene {
             for view in (self.view?.subviews)! {
                 view.removeFromSuperview()
             }
+            
+            //Set the contact delegate to this scene
+            physicsWorld.contactDelegate = self
+            
+            //Add our Camera to the Scene
             addChild(myCamera)
             camera = myCamera
+            
+            //Adding Background to the Scene
+            addChild(background)
+            background.size = CGSize(width: size.width, height: (size.height / 2) - 250)
+            background.zPosition = -1
             
             //Player code-- Adding to SceneGraph and initializing
             playerJeans.InitializeAttributes()
             addChild(playerJeans.jeansSpriteNode)
             
             //Platform code-- Adding to SceneGraph and initializing
+            //====================================================================
             let platform1 = Platform()
             platform1.InitializeAttributes(position: CGPoint(x: 0, y: -150))
             addChild(platform1.platformSpriteNode)
             
+            let platform2 = Platform()
+            platform2.InitializeAttributes(position: CGPoint(x: 250, y: -50))
+            addChild(platform2.platformSpriteNode)
+            
+            let platform3 = Platform()
+            platform3.InitializeAttributes(position: CGPoint(x: 500, y: 0))
+            addChild(platform3.platformSpriteNode)
+            //====================================================================
+            
             //Left Arrow code-- initialization
             leftArrowButton.setTitle("Left Arrow", for: .normal)
-            if let leftArrowButtonImg = UIImage(named: buttonImage) {
+            if let leftArrowButtonImg = UIImage(named: "arrowimageleft.png") {
                 leftArrowButton.setImage(leftArrowButtonImg, for: .normal)
             }
             leftArrowButton.addTarget(self, action: #selector(LevelOne.buttonAction(_:)), for: .touchDown)
@@ -55,7 +82,7 @@ class LevelOne: SKScene {
             
             //Right Arrow code-- initialization
             rightArrowButton.setTitle("Right Arrow", for: .normal)
-            if let rightArrowButtonImg = UIImage(named: buttonImage) {
+            if let rightArrowButtonImg = UIImage(named: "arrowimage.png") {
                 rightArrowButton.setImage(rightArrowButtonImg, for: .normal)
             }
             rightArrowButton.addTarget(self, action: #selector(LevelOne.buttonAction(_:)), for: .touchDown)
@@ -64,7 +91,7 @@ class LevelOne: SKScene {
             
             //Up Arrow code-- initialization
             upArrowButton.setTitle("Up Arrow", for: .normal)
-            if let upArrowButtonImg = UIImage(named: buttonImage) {
+            if let upArrowButtonImg = UIImage(named: "arrowimageup.png") {
                 upArrowButton.setImage(upArrowButtonImg, for: .normal)
             }
             upArrowButton.addTarget(self, action: #selector(LevelOne.buttonAction(_:)), for: .touchDown)
@@ -106,14 +133,23 @@ class LevelOne: SKScene {
         override func update(_ currentTime: TimeInterval) {
             // Called before each frame is rendered
             playerJeans.UpdatePosition()
+            
             camera?.position.x = playerJeans.jeansSpriteNode.position.x
             camera?.position.y = playerJeans.jeansSpriteNode.position.y
+            background.position.x = playerJeans.jeansSpriteNode.position.x
+            background.position.y = playerJeans.jeansSpriteNode.position.y
         }
 
+        func didBegin(_ contact: SKPhysicsContact) {
+            if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Platform") {
+                playerJeans.isGrounded = true
+            }
+        }
+    
     //Button Press
     @objc func buttonAction(_ sender: UIButton!) {
         if(sender == upArrowButton) {
-            playerJeans.jeansSpriteNode.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 150))
+            playerJeans.Jump()
         }
         if(sender == leftArrowButton){
             playerJeans.moveLeft = true

@@ -16,16 +16,18 @@ class Platform {
     
     //Sprite node to be added to the scene graph
     let platformSpriteNode = SKSpriteNode(imageNamed: "platform.png")
-    
-    let tag: String = "Platform"
 
     
     func InitializeAttributes(position: CGPoint) {
         
+        platformSpriteNode.name = "Platform"
         platformSpriteNode.size = CGSize(width: 250, height: 75)
         platformSpriteNode.position = position
         platformSpriteNode.physicsBody = SKPhysicsBody(texture: platformSprite, size: platformSpriteNode.size)
         platformSpriteNode.physicsBody?.isDynamic = false
+        platformSpriteNode.physicsBody?.categoryBitMask = CollisionTag.platform.rawValue
+        platformSpriteNode.physicsBody?.collisionBitMask = CollisionTag.player.rawValue
+        platformSpriteNode.physicsBody?.contactTestBitMask = CollisionTag.player.rawValue
         
     }
     
