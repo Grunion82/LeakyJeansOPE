@@ -9,10 +9,13 @@
 import Foundation
 import SpriteKit
 
-class Jeans : SKSpriteNode {
+class Jeans {
     
     //Sprite for Jeans loaded as a SKTexture
     let jeansSprite = SKTexture(imageNamed: "JeanSprite1.png")
+    
+    //Sprite node to be added to scene graph
+    let jeansSpriteNode = SKSpriteNode(imageNamed: "JeanSprite1.png")
     
     //Keeps track of if the Jeans should be moving left
     var moveLeft = false
@@ -21,11 +24,11 @@ class Jeans : SKSpriteNode {
     
     func InitializeAttributes() {
         
-        size = CGSize(width: 75, height: 100)
-        position = CGPoint(x: 0, y: 50)
+        jeansSpriteNode.size = CGSize(width: 75, height: 100)
+        jeansSpriteNode.position = CGPoint(x: 0, y: 50)
         let newConstraints: NSArray = [SKConstraint.zRotation(SKRange(lowerLimit: 0, upperLimit: 0))]
-        constraints = (newConstraints as! [SKConstraint])
-        physicsBody = SKPhysicsBody(texture: jeansSprite, size: self.size)
+        jeansSpriteNode.constraints = (newConstraints as! [SKConstraint])
+        jeansSpriteNode.physicsBody = SKPhysicsBody(texture: jeansSprite, size: jeansSpriteNode.size)
         
         //Frame stuff
         
@@ -35,11 +38,11 @@ class Jeans : SKSpriteNode {
         
         //Moves player left
         if(moveLeft == true) {
-            position.x += -4.0
+            jeansSpriteNode.position.x += -4.0
         }
         //Moves player right
         if(moveRight == true) {
-            position.x += 4.0
+            jeansSpriteNode.position.x += 4.0
         }
         
     }

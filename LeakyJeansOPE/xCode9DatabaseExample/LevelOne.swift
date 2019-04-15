@@ -12,16 +12,10 @@ import SpriteKit
 
 class LevelOne: SKScene {
     
-    let myCamera = SKCameraNode(fileNamed: "LevelOne")
+    let myCamera = SKCameraNode()
     
-    //Sprite for Jeans loaded as a SKTexture
-    let jeansSprite = SKTexture(imageNamed: "JeanSprite1.png")
-    //Sprite for Platform loaded as a SKTexture
-    let platformSprite = SKTexture(imageNamed: "platform.png")
-    let playerJeans = SKSpriteNode(imageNamed: "JeanSprite1.png") //Not loading with SKTexture(jeansSprite) to avoid "self not available" error
-    
-    var moveLeft = false
-    var moveRight = false
+    //Object that the player will be controlling
+    var playerJeans: Jeans = Jeans()
     
     //Sprite for buttons saved as a string
     let buttonImage = "arrowimage.png"
@@ -38,23 +32,17 @@ class LevelOne: SKScene {
             for view in (self.view?.subviews)! {
                 view.removeFromSuperview()
             }
+            addChild(myCamera)
             camera = myCamera
             
             //Player code-- Adding to SceneGraph and initializing
-            addChild(playerJeans)
-            playerJeans.size = CGSize(width: 75, height: 100)
-            playerJeans.position = CGPoint(x: 0, y: 50)
-            let constraints: NSArray = [SKConstraint.zRotation(SKRange(lowerLimit: 0, upperLimit: 0))]
-            playerJeans.constraints = (constraints as! [SKConstraint])
-            playerJeans.physicsBody = SKPhysicsBody(texture: jeansSprite, size: playerJeans.size)
+            playerJeans.InitializeAttributes()
+            addChild(playerJeans.jeansSpriteNode)
             
             //Platform code-- Adding to SceneGraph and initializing
-            let platform1 = SKSpriteNode(texture: platformSprite)
-            platform1.size = CGSize(width: 250, height: 75)
-            platform1.position = CGPoint(x: 0, y: -150)
-            platform1.physicsBody = SKPhysicsBody(texture: platformSprite, size: platform1.size)
-            platform1.physicsBody?.isDynamic = false
-            addChild(platform1)
+            let platform1 = Platform()
+            platform1.InitializeAttributes(position: CGPoint(x: 0, y: -150))
+            addChild(platform1.platformSpriteNode)
             
             //Left Arrow code-- initialization
             leftArrowButton.setTitle("Left Arrow", for: .normal)
@@ -117,30 +105,33 @@ class LevelOne: SKScene {
         
         override func update(_ currentTime: TimeInterval) {
             // Called before each frame is rendered
+            playerJeans.UpdatePosition()
+            camera?.position.x = playerJeans.jeansSpriteNode.position.x
+            camera?.position.y = playerJeans.jeansSpriteNode.position.y
         }
 
     //Button Press
     @objc func buttonAction(_ sender: UIButton!) {
         if(sender == upArrowButton) {
-            playerJeans.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 150))
+            playerJeans.jeansSpriteNode.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 150))
         }
         if(sender == leftArrowButton){
-            moveLeft = true
+            playerJeans.moveLeft = true
         }
             
         if(sender == rightArrowButton) {
-            moveRight = true
+            playerJeans.moveRight = true
         }
     }
     
     //Button Exit
     @objc func buttonExit(_ sender: UIButton!) {
         if(sender == leftArrowButton){
-            moveLeft = false
+            playerJeans.moveLeft = false
         }
         
         if(sender == rightArrowButton) {
-            moveRight = false
+            playerJeans.moveRight = false
         }
 
     }
