@@ -20,6 +20,9 @@ class Jeans {
     //Starting position for the Jeans
     let startPos: CGPoint = CGPoint(x: 0, y: 50)
     
+    //The max water level of the jeans
+    let MAX_WATER_LEVEL: CGFloat = 100.0
+    
     //Holds how wet the jeans are
     var wetness: CGFloat = 100.0
     

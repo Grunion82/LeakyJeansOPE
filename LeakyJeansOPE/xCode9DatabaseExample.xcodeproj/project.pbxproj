@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0701E85D22690C5F0044C2D7 /* Spike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0701E85C22690C5F0044C2D7 /* Spike.swift */; };
 		0746A0F0225FE15100D2AABF /* Jeans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0746A0EF225FE15100D2AABF /* Jeans.swift */; };
 		0751925D224EBF860003FBC8 /* LevelOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0751925C224EBF860003FBC8 /* LevelOne.swift */; };
 		0751925F224EC5A40003FBC8 /* LevelOne.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0751925E224EC5A40003FBC8 /* LevelOne.sks */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0701E85C22690C5F0044C2D7 /* Spike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spike.swift; sourceTree = "<group>"; };
 		0746A0EF225FE15100D2AABF /* Jeans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Jeans.swift; sourceTree = "<group>"; };
 		0751925C224EBF860003FBC8 /* LevelOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelOne.swift; sourceTree = "<group>"; };
 		0751925E224EC5A40003FBC8 /* LevelOne.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LevelOne.sks; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				8CB8F79D2228C1D0006D033D /* RealtimeDB.swift */,
 				0746A0EF225FE15100D2AABF /* Jeans.swift */,
 				07E8F090226524960060665D /* Platform.swift */,
+				0701E85C22690C5F0044C2D7 /* Spike.swift */,
 			);
 			path = xCode9DatabaseExample;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8CB8F79E2228C1D0006D033D /* RealtimeDB.swift in Sources */,
+				0701E85D22690C5F0044C2D7 /* Spike.swift in Sources */,
 				0746A0F0225FE15100D2AABF /* Jeans.swift in Sources */,
 				8CB8F78A2228C039006D033D /* GameScene.swift in Sources */,
 				8CB8F78C2228C039006D033D /* GameViewController.swift in Sources */,

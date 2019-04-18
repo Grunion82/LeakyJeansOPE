@@ -12,13 +12,19 @@ import SpriteKit
 
 enum CollisionTag: UInt32 {
     
-    case player = 0b01
-    case platform = 0b10
+    case player = 0b1       //1
+    case platform = 0b10    //2
+    case spike = 0b11       //3
+    case oil = 0b100        //4
+    case fan = 0b101        //5
+    case water = 0b110      //6
+    case finish = 0b111     //7
     
 }
 
 class LevelOne: SKScene, SKPhysicsContactDelegate {
     
+    //Camera that will be looking at the scene
     let myCamera = SKCameraNode()
     
     //Background for the Scene
@@ -33,7 +39,12 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
     let rightArrowButton = UIButton(frame: CGRect(x: 100, y: 275, width: 150, height: 150))
     //Up Arrow button object
     let upArrowButton = UIButton(frame: CGRect(x: 600, y: 275, width: 150, height: 150))
-    
+    //Sprite Node to show player's water level
+    let waterLevelNode = SKSpriteNode(color: .blue, size: CGSize(width: 125, height: 25))
+    //Holds the initial width of the waterLevelNode
+    var waterLevelWidth: CGFloat = 0.0
+    //Frame for the waterLevelNode
+    var frameNode = SKShapeNode()
     
         override func didMove(to view: SKView) {
             for view in (self.view?.subviews)! {
@@ -50,7 +61,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             //Adding Background to the Scene
             addChild(background)
             background.size = CGSize(width: size.width, height: (size.height / 2) - 250)
-            background.zPosition = -1
+            background.zPosition = -1   //Moves the background behind all other objects
             
             //Player code-- Adding to SceneGraph and initializing
             playerJeans.InitializeAttributes()
@@ -69,6 +80,13 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             let platform3 = Platform()
             platform3.InitializeAttributes(position: CGPoint(x: 500, y: 0))
             addChild(platform3.platformSpriteNode)
+            //====================================================================
+            
+            //Spike code-- Add to SceneGraph and initializing
+            //====================================================================
+            let spike1 = Spike()
+            spike1.InitializeAttributes(position: CGPoint(x: 250, y: -25))
+            addChild(spike1.spikeSpriteNode)
             //====================================================================
             
             //Left Arrow code-- initialization
@@ -96,6 +114,17 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             }
             upArrowButton.addTarget(self, action: #selector(LevelOne.buttonAction(_:)), for: .touchDown)
             self.view?.addSubview(upArrowButton)
+            
+            //Water Level Node code-- initialization
+            waterLevelNode.anchorPoint = CGPoint(x: 0.5, y: 0)
+            addChild(waterLevelNode)
+            waterLevelWidth = waterLevelNode.frame.size.width
+            
+            //Frame Node-- initializaiton
+            frameNode = SKShapeNode(rect: waterLevelNode.frame)
+            frameNode.fillColor = .clear
+            frameNode.strokeColor = .black
+            addChild(frameNode)
             
         }
         
@@ -134,17 +163,38 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             // Called before each frame is rendered
             playerJeans.UpdatePosition()
             
+            //Update the water level bar value
+            if(playerJeans.moveLeft || playerJeans.moveRight) {
+                UpdateWaterLevelNode()
+            }
+            
+            //Make a number of scene objects follow the player's position
             camera?.position.x = playerJeans.jeansSpriteNode.position.x
             camera?.position.y = playerJeans.jeansSpriteNode.position.y
             background.position.x = playerJeans.jeansSpriteNode.position.x
             background.position.y = playerJeans.jeansSpriteNode.position.y
+            waterLevelNode.position.x = playerJeans.jeansSpriteNode.position.x
+            waterLevelNode.position.y = playerJeans.jeansSpriteNode.position.y + 65
+            frameNode.position.x = playerJeans.jeansSpriteNode.position.x
+            frameNode.position.y = playerJeans.jeansSpriteNode.position.y + 65
         }
 
         func didBegin(_ contact: SKPhysicsContact) {
             if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Platform") {
                 playerJeans.isGrounded = true
             }
+            if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Spike") {
+                playerJeans.leakLevel += 0.1
+            }
         }
+    
+    func UpdateWaterLevelNode() {
+        
+        let ratio: CGFloat = playerJeans.wetness / playerJeans.MAX_WATER_LEVEL
+        let newWidth: CGFloat = waterLevelWidth * ratio
+        waterLevelNode.run(.resize(toWidth: newWidth, duration: 0.1))
+        
+    }
     
     //Button Press
     @objc func buttonAction(_ sender: UIButton!) {
