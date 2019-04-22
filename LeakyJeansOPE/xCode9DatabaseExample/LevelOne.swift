@@ -43,6 +43,8 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
     let waterLevelNode = SKSpriteNode(color: .blue, size: CGSize(width: 125, height: 25))
     //Holds the initial width of the waterLevelNode
     var waterLevelWidth: CGFloat = 0.0
+    //Sprite Node to show player's oil level
+    let oilLevelNode = SKSpriteNode(color: .black, size: CGSize(width: 125, height: 25))
     //Frame for the waterLevelNode
     var frameNode = SKShapeNode()
     
@@ -80,6 +82,10 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             let platform3 = Platform()
             platform3.InitializeAttributes(position: CGPoint(x: 500, y: 0))
             addChild(platform3.platformSpriteNode)
+            
+            let platform4 = Platform()
+            platform4.InitializeAttributes(position: CGPoint(x: 825, y: 0))
+            addChild(platform4.platformSpriteNode)
             //====================================================================
             
             //Spike code-- Add to SceneGraph and initializing
@@ -87,6 +93,20 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             let spike1 = Spike()
             spike1.InitializeAttributes(position: CGPoint(x: 250, y: -25))
             addChild(spike1.spikeSpriteNode)
+            //====================================================================
+            
+            //WaterToken code-- Add to SceneGraph and initializing
+            //====================================================================
+            let water1 = WaterToken()
+            water1.InitializeAttributes(position: CGPoint(x: 825, y: 40))
+            addChild(water1.waterTokenSpriteNode)
+            //====================================================================
+            
+            //Oil spill code-- Add to SceneGraph and initializing
+            //====================================================================
+            let oil1 = Oil()
+            oil1.InitializeAttributes(position: CGPoint(x: 500, y: 20))
+            addChild(oil1.oilSpriteNode)
             //====================================================================
             
             //Left Arrow code-- initialization
@@ -119,6 +139,10 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             waterLevelNode.anchorPoint = CGPoint(x: 0.5, y: 0)
             addChild(waterLevelNode)
             waterLevelWidth = waterLevelNode.frame.size.width
+            
+            //Oil Level Node code-- initialization
+            addChild(oilLevelNode)
+            oilLevelNode.zPosition = -0.1
             
             //Frame Node-- initializaiton
             frameNode = SKShapeNode(rect: waterLevelNode.frame)
@@ -164,9 +188,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             playerJeans.UpdatePosition()
             
             //Update the water level bar value
-            if(playerJeans.moveLeft || playerJeans.moveRight) {
-                UpdateWaterLevelNode()
-            }
+             UpdateLevelNodes()
             
             //Make a number of scene objects follow the player's position
             camera?.position.x = playerJeans.jeansSpriteNode.position.x
@@ -175,6 +197,8 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             background.position.y = playerJeans.jeansSpriteNode.position.y
             waterLevelNode.position.x = playerJeans.jeansSpriteNode.position.x
             waterLevelNode.position.y = playerJeans.jeansSpriteNode.position.y + 65
+            oilLevelNode.position.x = playerJeans.jeansSpriteNode.position.x
+            oilLevelNode.position.y = playerJeans.jeansSpriteNode.position.y + 77.5
             frameNode.position.x = playerJeans.jeansSpriteNode.position.x
             frameNode.position.y = playerJeans.jeansSpriteNode.position.y + 65
         }
@@ -184,15 +208,24 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
                 playerJeans.isGrounded = true
             }
             if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Spike") {
-                playerJeans.leakLevel += 0.1
+                playerJeans.leakLevel += 0.05
+            }
+            if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Oil") {
+                playerJeans.oilLevel += 3.0
+            }
+            if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Water") {
+                playerJeans.wetness += 25.0
+                contact.bodyB.node?.removeFromParent()
             }
         }
     
-    func UpdateWaterLevelNode() {
+    func UpdateLevelNodes() {
         
         let ratio: CGFloat = playerJeans.wetness / playerJeans.MAX_WATER_LEVEL
         let newWidth: CGFloat = waterLevelWidth * ratio
         waterLevelNode.run(.resize(toWidth: newWidth, duration: 0.1))
+        
+        oilLevelNode.run(.resize(toWidth: newWidth + playerJeans.oilLevel, duration: 0.1))
         
     }
     

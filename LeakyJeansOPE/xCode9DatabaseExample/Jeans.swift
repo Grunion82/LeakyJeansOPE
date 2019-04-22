@@ -26,6 +26,9 @@ class Jeans {
     //Holds how wet the jeans are
     var wetness: CGFloat = 100.0
     
+    //Holds what level of oil is taking up the Jeans
+    var oilLevel: CGFloat = 0.0
+    
     //The max speed of the Jeans
     let MAX_SPEED: CGFloat = 10.0
     
@@ -52,7 +55,7 @@ class Jeans {
         jeansSpriteNode.physicsBody = SKPhysicsBody(texture: jeansSprite, size: jeansSpriteNode.size)
         jeansSpriteNode.physicsBody?.categoryBitMask = CollisionTag.player.rawValue
         jeansSpriteNode.physicsBody?.collisionBitMask = CollisionTag.platform.rawValue
-        jeansSpriteNode.physicsBody?.contactTestBitMask = CollisionTag.platform.rawValue
+        jeansSpriteNode.physicsBody?.contactTestBitMask = CollisionTag.platform.rawValue | CollisionTag.spike.rawValue | CollisionTag.oil.rawValue | CollisionTag.water.rawValue
         
         //Frame stuff
         
@@ -78,12 +81,16 @@ class Jeans {
             wetness -= 15.0
         }
         
-        //Clamp wetness to above 0
-        if(wetness < 0.0){
+        //Clamp wetness to above 0 and below its Max
+        if(wetness < 0.0) {
             wetness = 0.0
         }
-        
-        //print(wetness)
+        if(oilLevel > MAX_WATER_LEVEL) {
+            oilLevel = MAX_WATER_LEVEL
+        }
+        if(wetness > MAX_WATER_LEVEL - oilLevel) {
+            wetness = MAX_WATER_LEVEL - oilLevel
+        }
         
     }
     
