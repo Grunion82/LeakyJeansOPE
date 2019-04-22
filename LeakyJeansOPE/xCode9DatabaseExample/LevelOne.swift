@@ -17,7 +17,7 @@ enum Animation {
 class LevelOne: SKScene {
     
     //Sprite for Jeans loaded as a SKTexture
-    let jeansSprite = SKTexture(imageNamed: "JeanSprite1.png")
+    
     //Sprite for Platform loaded as a SKTexture
     let platformSprite = SKTexture(imageNamed: "platform.png")
     //keep track of current anim
@@ -38,26 +38,28 @@ class LevelOne: SKScene {
     //player sprite
     private var playerJeans = SKSpriteNode()
     //player frames
-    private var playerWalkingFrames: [SKTexture] = []
-    private var playerJumpingFrames: [SKTexture] = []
-    private var playeridleFrames: [SKTexture] = []
-    private var playerTakingDmgFrames: [SKTexture] = []
+    private var playerWalkingFrames: [SKTexture] = [SKTexture(imageNamed: "walk000"),SKTexture(imageNamed: "walk001"),SKTexture(imageNamed: "walk002"),SKTexture(imageNamed: "walk003"),SKTexture(imageNamed: "walk004"),SKTexture(imageNamed: "walk005"),SKTexture(imageNamed: "walk006"),SKTexture(imageNamed: "walk007")]
     
-            var walkFrames: [SKTexture] = [SKTexture(imageNamed: "walk000"),SKTexture(imageNamed: "walk001"),SKTexture(imageNamed: "walk002"),SKTexture(imageNamed: "walk003"),SKTexture(imageNamed: "walk004"),SKTexture(imageNamed: "walk005"),SKTexture(imageNamed: "walk006"),SKTexture(imageNamed: "walk007")]
+    private var playerJumpingFrames: [SKTexture] = [SKTexture(imageNamed: "jump000"),SKTexture(imageNamed: "jump001"),SKTexture(imageNamed: "jump002"),SKTexture(imageNamed: "jump003"),SKTexture(imageNamed: "jump004"),SKTexture(imageNamed: "jump005")]
+    
+    private var playeridleFrames: [SKTexture] = [SKTexture(imageNamed: "walk000")]
+    
+    private var playerTakingDmgFrames: [SKTexture] = [SKTexture(imageNamed: "dmg000"),SKTexture(imageNamed: "dmg001"),SKTexture(imageNamed: "dmg002"),SKTexture(imageNamed: "dmg003"),SKTexture(imageNamed: "dmg004"),SKTexture(imageNamed: "dmg005"),SKTexture(imageNamed: "dmg006"),SKTexture(imageNamed: "dmg007")]
     
     
         override func didMove(to view: SKView) {
             for view in (self.view?.subviews)! {
                 view.removeFromSuperview()
             }
-            buildPlayer(walkFrames)
+            
+            //buildSprite(playerWalkingFrames, playerJeans)
             //Player code-- Adding to SceneGraph and initializing
-            //addChild(playerJeans)
+            addChild(playerJeans)
             playerJeans.size = CGSize(width: 100, height: 100)
             playerJeans.position = CGPoint(x: 0, y: 50)
             let constraints: NSArray = [SKConstraint.zRotation(SKRange(lowerLimit: 0, upperLimit: 0))]
             playerJeans.constraints = (constraints as! [SKConstraint])
-            playerJeans.physicsBody = SKPhysicsBody(texture: jeansSprite, size: playerJeans.size)
+            playerJeans.physicsBody = SKPhysicsBody(texture: playerWalkingFrames[0], size: playerJeans.size)
             
             //Platform code-- Adding to SceneGraph and initializing
             let platform1 = SKSpriteNode(texture: platformSprite)
@@ -71,6 +73,7 @@ class LevelOne: SKScene {
             leftArrowButton.setTitle("Left Arrow", for: .normal)
             if let leftArrowButtonImg = UIImage(named: buttonImage) {
                 leftArrowButton.setImage(leftArrowButtonImg, for: .normal)
+                
             }
             leftArrowButton.addTarget(self, action: #selector(LevelOne.buttonAction(_:)), for: .touchDown)
             leftArrowButton.addTarget(self, action: #selector(LevelOne.buttonExit(_:)), for: .touchUpInside)
@@ -80,6 +83,7 @@ class LevelOne: SKScene {
             rightArrowButton.setTitle("Right Arrow", for: .normal)
             if let rightArrowButtonImg = UIImage(named: buttonImage) {
                 rightArrowButton.setImage(rightArrowButtonImg, for: .normal)
+            
             }
             rightArrowButton.addTarget(self, action: #selector(LevelOne.buttonAction(_:)), for: .touchDown)
             rightArrowButton.addTarget(self, action: #selector(LevelOne.buttonExit(_:)), for: .touchUpInside)
@@ -94,34 +98,14 @@ class LevelOne: SKScene {
             self.view?.addSubview(upArrowButton)
             
             
-            switch Currentanim {
-            case .idle:
-                playerJeans.run(SKAction.repeatForever(
-                    SKAction.animate(with: playeridleFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"idle")
-                break;
-            case .walking:
-                playerJeans.run(SKAction.repeatForever(
-                    SKAction.animate(with: playerWalkingFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"walking")
-                break;
-            case.jumping:
-                playerJeans.run(SKAction.repeatForever(
-                    SKAction.animate(with: playerJumpingFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"jumping")
-                break;
-            case .tDamage:
-                playerJeans.run(SKAction.repeatForever(
-                    SKAction.animate(with: playerTakingDmgFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"takingDmg")
-                break;
-            default:
-                Currentanim = .idle
-                break;
-            }
             
-            //animatePLayer()
+            
+            animatePLayer(Currentanim)
         }
         
         
         func touchDown(atPoint pos : CGPoint) {
-            
+        animatePLayer(Currentanim)
         }
         
         func touchMoved(toPoint pos : CGPoint) {
@@ -129,7 +113,7 @@ class LevelOne: SKScene {
         }
         
         func touchUp(atPoint pos : CGPoint) {
-            
+            Currentanim = Animation.idle
         }
         
         override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -154,28 +138,43 @@ class LevelOne: SKScene {
             // Called before each frame is rendered
             if(moveLeft == true) {
                 playerJeans.position.x += -1.0
+                
             }
             if(moveRight == true) {
                 playerJeans.position.x += 1.0
+              
             }
+            
+            
+            
         }
 
     //Button Press
     @objc func buttonAction(_ sender: UIButton!) {
         if(sender == upArrowButton) {
             playerJeans.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 150))
+            Currentanim = Animation.jumping
+            animatePLayer(Currentanim)
         }
         if(sender == leftArrowButton){
             moveLeft = true
+            Currentanim = Animation.walking
+            animatePLayer(Currentanim)
         }
             
         if(sender == rightArrowButton) {
             moveRight = true
+            Currentanim = Animation.walking
+            animatePLayer(Currentanim)
         }
     }
     
     //Button Stay
     @objc func buttonExit(_ sender: UIButton!) {
+        //Run idle animation
+        Currentanim = Animation.idle
+        animatePLayer(Currentanim)
+        
         if(sender == leftArrowButton){
             moveLeft = false
         }
@@ -186,28 +185,43 @@ class LevelOne: SKScene {
 
     }
     
-    func buildPlayer(_ frames: [SKTexture]) {
+    func buildSprite(_ frames: [SKTexture],_ spriteType: SKSpriteNode) {
 
         var dummy:[SKTexture]  = frames
-        
-        let numImages = dummy.count
-        for i in 1...numImages {
-            dummy.append(dummy[i])
-        }
-        playerWalkingFrames = dummy
+        var dummy_2 :SKSpriteNode = spriteType
         
         let firstFrameTexture = dummy[0]
-        playerJeans = SKSpriteNode(texture: firstFrameTexture)
-        playerJeans.position = CGPoint(x: frame.midX, y: frame.midY)
-        addChild(playerJeans)
+        
+        dummy_2 = SKSpriteNode(texture: firstFrameTexture)
+        dummy_2.position = CGPoint(x: frame.midX, y: frame.midY)
+        //addChild(dummy_2)
         
     }
     
     
 
-    func animatePLayer() {
-        playerJeans.run(SKAction.repeatForever(
-            SKAction.animate(with: playerWalkingFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"walking")
+    func animatePLayer(_ anim_: Animation) {
+        //playerJeans.run(SKAction.repeatForever(
+          //  SKAction.animate(with: playerWalkingFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"walking")
+        Currentanim = anim_
+        switch Currentanim {
+        case .idle:
+            playerJeans.run(SKAction.repeatForever(
+                SKAction.animate(with: playeridleFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"idle")
+            break;
+        case .walking:
+            playerJeans.run(SKAction.repeatForever(
+                SKAction.animate(with: playerWalkingFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"walking")
+            break;
+        case.jumping:
+            playerJeans.run(SKAction.repeatForever(
+                SKAction.animate(with: playerJumpingFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"jumping")
+            break;
+        case .tDamage:
+            playerJeans.run(SKAction.repeatForever(
+                SKAction.animate(with: playerTakingDmgFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"takingDmg")
+            break;
+        }
     }
     
     

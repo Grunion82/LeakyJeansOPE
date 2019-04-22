@@ -8,6 +8,7 @@
 
 import SpriteKit
 import GameplayKit
+import AVFoundation
 
 class GameScene: SKScene {
     
@@ -20,6 +21,7 @@ class GameScene: SKScene {
     //Options button object
     let optionsButton = UIButton(frame: CGRect(x: 260, y: 220, width: 160, height: 60))
   
+    var audioPlayer =  AVAudioPlayer()
     
     private var playerSprite = SKSpriteNode()
     private var playerWalkingFrames: [SKTexture] = []
@@ -34,8 +36,16 @@ class GameScene: SKScene {
 //        background.zPosition = -1
 //        background.size = CGSize(width: size.width, height: size.height/2)
 //        addChild(background)
-        
-
+        do{
+            audioPlayer = try AVAudioPlayer(contentsOf: URL.init(fileURLWithPath:Bundle.main.path(forResource: "blop", ofType: "wav")!))
+            audioPlayer.prepareToPlay()
+        }
+        catch{
+            
+            
+            print(error)
+        }
+            
         //Create the background object and give it to the SceneGraph-- Change size to be drawn in display
         let background = SKSpriteNode(imageNamed: "MainMenu.png")
         addChild(background)
@@ -68,7 +78,7 @@ class GameScene: SKScene {
         }
         optionsButton.addTarget(self, action: #selector(GameScene.buttonAction(_:)), for: .touchUpInside)
         self.view?.addSubview(optionsButton)
-        
+        audioPlayer.play()
         buildPlayer()
         //animatePLayer()
     }
@@ -77,15 +87,15 @@ class GameScene: SKScene {
     
     
     func buildPlayer() {
-        var walkFrames: [SKTexture] = [SKTexture(imageNamed: "tile000"),SKTexture(imageNamed: "tile001"),SKTexture(imageNamed: "tile002"),SKTexture(imageNamed: "tile003"),SKTexture(imageNamed: "tile004"),SKTexture(imageNamed: "tile005"),SKTexture(imageNamed: "tile006"),SKTexture(imageNamed: "tile007"),SKTexture(imageNamed: "tile008"),SKTexture(imageNamed: "tile009"),SKTexture(imageNamed: "tile010"),SKTexture(imageNamed: "tile011"),SKTexture(imageNamed: "tile012"),SKTexture(imageNamed: "tile013"),SKTexture(imageNamed: "tile014"),SKTexture(imageNamed: "tile015")]
+        let walkFrames: [SKTexture] = [SKTexture(imageNamed: "tile000"),SKTexture(imageNamed: "tile001"),SKTexture(imageNamed: "tile002"),SKTexture(imageNamed: "tile003"),SKTexture(imageNamed: "tile004"),SKTexture(imageNamed: "tile005"),SKTexture(imageNamed: "tile006"),SKTexture(imageNamed: "tile007"),SKTexture(imageNamed: "tile008"),SKTexture(imageNamed: "tile009"),SKTexture(imageNamed: "tile010"),SKTexture(imageNamed: "tile011"),SKTexture(imageNamed: "tile012"),SKTexture(imageNamed: "tile013"),SKTexture(imageNamed: "tile014"),SKTexture(imageNamed: "tile015")]
         
 
-        let numImages = walkFrames.count
-        for i in 1...numImages {
-            walkFrames.append(walkFrames[i])
-        }
+//        let numImages = walkFrames.count
+//        for i in 1...numImages {
+//            walkFrames.append(walkFrames[i])
+//        }
         playerWalkingFrames = walkFrames
-        
+
         let firstFrameTexture = playerWalkingFrames[0]
         playerSprite = SKSpriteNode(texture: firstFrameTexture)
         playerSprite.position = CGPoint(x: frame.midX, y: frame.midY)
