@@ -95,7 +95,7 @@ class Jeans {
     }
     
     func Jump() {
-        
+        //If Jeans are grounded, apply an upward force
         if(isGrounded == true) {
             jeansSpriteNode.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 200))
             isGrounded = false

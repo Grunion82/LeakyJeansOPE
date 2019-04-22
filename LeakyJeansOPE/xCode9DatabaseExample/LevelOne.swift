@@ -142,7 +142,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             
             //Oil Level Node code-- initialization
             addChild(oilLevelNode)
-            oilLevelNode.zPosition = -0.1
+            oilLevelNode.zPosition = -0.1   //Makes the sprite appear behind the water's 
             
             //Frame Node-- initializaiton
             frameNode = SKShapeNode(rect: waterLevelNode.frame)
@@ -184,7 +184,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
         
         
         override func update(_ currentTime: TimeInterval) {
-            // Called before each frame is rendered
+            //Called before each frame is rendered
             playerJeans.UpdatePosition()
             
             //Update the water level bar value
@@ -204,15 +204,16 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
         }
 
         func didBegin(_ contact: SKPhysicsContact) {
+            //Player collides with platform
             if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Platform") {
                 playerJeans.isGrounded = true
-            }
+            } //Player collides with spike
             if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Spike") {
                 playerJeans.leakLevel += 0.05
-            }
+            } //Player collides with Oil
             if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Oil") {
                 playerJeans.oilLevel += 3.0
-            }
+            } //Player collides with Water
             if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Water") {
                 playerJeans.wetness += 25.0
                 contact.bodyB.node?.removeFromParent()
@@ -220,37 +221,40 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
         }
     
     func UpdateLevelNodes() {
-        
-        let ratio: CGFloat = playerJeans.wetness / playerJeans.MAX_WATER_LEVEL
-        let newWidth: CGFloat = waterLevelWidth * ratio
+        //Update the water level's value (width)
+        var ratio: CGFloat = playerJeans.wetness / playerJeans.MAX_WATER_LEVEL
+        var newWidth: CGFloat = waterLevelWidth * ratio
         waterLevelNode.run(.resize(toWidth: newWidth, duration: 0.1))
         
-        oilLevelNode.run(.resize(toWidth: newWidth + playerJeans.oilLevel, duration: 0.1))
+        //Update the oil level's value (width)
+        ratio = playerJeans.oilLevel / playerJeans.MAX_WATER_LEVEL
+        newWidth = newWidth + waterLevelWidth * ratio
+        oilLevelNode.run(.resize(toWidth: newWidth, duration: 0.1))
         
     }
     
     //Button Press
     @objc func buttonAction(_ sender: UIButton!) {
         if(sender == upArrowButton) {
-            playerJeans.Jump()
+            playerJeans.Jump()              //Player jump
         }
         if(sender == leftArrowButton){
-            playerJeans.moveLeft = true
+            playerJeans.moveLeft = true     //Player moves to the left
         }
             
         if(sender == rightArrowButton) {
-            playerJeans.moveRight = true
+            playerJeans.moveRight = true    //Player move to the right
         }
     }
     
     //Button Exit
     @objc func buttonExit(_ sender: UIButton!) {
         if(sender == leftArrowButton){
-            playerJeans.moveLeft = false
+            playerJeans.moveLeft = false    //Player no longer moving left
         }
         
         if(sender == rightArrowButton) {
-            playerJeans.moveRight = false
+            playerJeans.moveRight = false   //Player no longer moving right
         }
 
     }
