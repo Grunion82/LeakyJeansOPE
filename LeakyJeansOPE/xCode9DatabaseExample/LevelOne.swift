@@ -39,13 +39,6 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
     //Object that the player will be controlling
     var playerJeans: Jeans = Jeans()
     
-    //For timer
-    var seconds = 0
-    var sceneTimer = Timer()
-    var isTimerRunning = false
-    
-    
-    
     //Left Arrow button object
     let leftArrowButton = UIButton(frame: CGRect(x: -15, y: 275, width: 150, height: 150))
     //Right Arrow button object
@@ -213,19 +206,9 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
         override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
             for t in touches { self.touchUp(atPoint: t.location(in: self)) }
         }
-    
-    override func sceneDidLoad() {
-        super.sceneDidLoad()
-        sceneTimer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(LevelOne.updateSceneTimer)), userInfo: nil, repeats: true)
-    }
-    
-    @objc func updateSceneTimer(){
-        seconds += 1
         
-    }
-    
+        
         override func update(_ currentTime: TimeInterval) {
-            
             //Called before each frame is rendered
             playerJeans.UpdatePosition()
             
@@ -243,8 +226,6 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             oilLevelNode.position.y = playerJeans.jeansSpriteNode.position.y + 77.5
             frameNode.position.x = playerJeans.jeansSpriteNode.position.x
             frameNode.position.y = playerJeans.jeansSpriteNode.position.y + 65
-            
-            
         }
 
         func didBegin(_ contact: SKPhysicsContact) {
@@ -281,7 +262,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
     }
     
     func EndGame(_ endCase: EndGameFlag) {
-        sceneTimer.invalidate()
+        
         //Swap to end scene
         if let newScene = EndScene(fileNamed: "EndScene") {
             newScene.scaleMode = .aspectFill
@@ -293,8 +274,6 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             upArrowButton.removeFromSuperview()
             self.view?.presentScene(newScene, transition: transition)
         }
-        
-        seconds = 0
     }
     
     //Button Press
@@ -320,8 +299,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
         if(sender == rightArrowButton) {
             playerJeans.moveRight = false   //Player no longer moving right
         }
-        sceneTimer.invalidate()
-        seconds = 0
+
     }
     
     
