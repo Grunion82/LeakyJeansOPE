@@ -22,6 +22,12 @@ enum CollisionTag: UInt32 {
     
 }
 
+enum EndGameFlag: UInt32 {
+    
+    case win = 0b1          //1
+    case lose = 0b10        //2
+}
+
 class LevelOne: SKScene, SKPhysicsContactDelegate {
     
     //Camera that will be looking at the scene
@@ -86,6 +92,10 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             let platform4 = Platform()
             platform4.InitializeAttributes(position: CGPoint(x: 825, y: 0))
             addChild(platform4.platformSpriteNode)
+            
+            let platform5 = Platform()
+            platform5.InitializeAttributes(position: CGPoint(x: 1100, y: -100))
+            addChild(platform5.platformSpriteNode)
             //====================================================================
             
             //Spike code-- Add to SceneGraph and initializing
@@ -98,8 +108,16 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             //WaterToken code-- Add to SceneGraph and initializing
             //====================================================================
             let water1 = WaterToken()
-            water1.InitializeAttributes(position: CGPoint(x: 825, y: 40))
+            water1.InitializeAttributes(position: CGPoint(x: 800, y: 40))
             addChild(water1.waterTokenSpriteNode)
+            
+            let water2 = WaterToken()
+            water2.InitializeAttributes(position: CGPoint(x: 850, y: 40))
+            addChild(water2.waterTokenSpriteNode)
+            
+            let water3 = WaterToken()
+            water3.InitializeAttributes(position: CGPoint(x: 1050, y: -60))
+            addChild(water3.waterTokenSpriteNode)
             //====================================================================
             
             //Oil spill code-- Add to SceneGraph and initializing
@@ -107,6 +125,13 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             let oil1 = Oil()
             oil1.InitializeAttributes(position: CGPoint(x: 500, y: 20))
             addChild(oil1.oilSpriteNode)
+            //====================================================================
+            
+            //Finsh Flag code-- Add to SceneGraph and initializing
+            //====================================================================
+            let finishFlag = Flag()
+            finishFlag.InitializeAttributes(position: CGPoint(x: 1200, y: -25))
+            addChild(finishFlag.flagSpriteNode)
             //====================================================================
             
             //Left Arrow code-- initialization
@@ -212,11 +237,14 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
                 playerJeans.leakLevel += 0.05
             } //Player collides with Oil
             if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Oil") {
-                playerJeans.oilLevel += 3.0
+                playerJeans.oilLevel += 1.0
             } //Player collides with Water
             if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Water") {
                 playerJeans.wetness += 25.0
                 contact.bodyB.node?.removeFromParent()
+            } //Player collides with End Flag
+            if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Flag") {
+                EndGame(EndGameFlag.win)
             }
         }
     
@@ -231,6 +259,21 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
         newWidth = newWidth + waterLevelWidth * ratio
         oilLevelNode.run(.resize(toWidth: newWidth, duration: 0.1))
         
+    }
+    
+    func EndGame(_ endCase: EndGameFlag) {
+        
+        //Swap to end scene
+        if let newScene = EndScene(fileNamed: "EndScene") {
+            newScene.scaleMode = .aspectFill
+            newScene.endCase = endCase.rawValue
+            newScene.score = playerJeans.wetness
+            let transition = SKTransition.moveIn(with: .right, duration: 0.25)
+            leftArrowButton.removeFromSuperview()
+            rightArrowButton.removeFromSuperview()
+            upArrowButton.removeFromSuperview()
+            self.view?.presentScene(newScene, transition: transition)
+        }
     }
     
     //Button Press
