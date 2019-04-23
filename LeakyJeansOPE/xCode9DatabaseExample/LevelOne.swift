@@ -39,6 +39,11 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
     //Object that the player will be controlling
     var playerJeans: Jeans = Jeans()
     
+    //For timer
+    var seconds = 0
+    var sceneTimer = Timer()
+    
+    
     //Left Arrow button object
     let leftArrowButton = UIButton(frame: CGRect(x: -15, y: 275, width: 150, height: 150))
     //Right Arrow button object
@@ -176,8 +181,16 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             addChild(frameNode)
             
         }
-        
-        
+    
+    override func sceneDidLoad() {
+        super.sceneDidLoad()
+        sceneTimer = Timer(timeInterval: 1, target: self, selector: #selector(LevelOne.updateSceneTimer), userInfo: nil, repeats: true)
+    }
+    
+    @objc func updateSceneTimer(){
+     seconds += 1
+    }
+    
         func touchDown(atPoint pos : CGPoint) {
             
         }
@@ -263,7 +276,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
     }
     
     func EndGame(_ endCase: EndGameFlag) {
-        
+        sceneTimer.invalidate()
         //Swap to end scene
         if let newScene = EndScene(fileNamed: "EndScene") {
             newScene.scaleMode = .aspectFill
@@ -275,6 +288,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             upArrowButton.removeFromSuperview()
             self.view?.presentScene(newScene, transition: transition)
         }
+        seconds = 0
     }
     
     //Button Press
@@ -304,6 +318,8 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             playerJeans.moveRight = false   //Player no longer moving right
             playerJeans.animatePLayer(Animation.idle)
         }
+        sceneTimer.invalidate()
+        seconds = 0
 
     }
     
