@@ -9,6 +9,14 @@
 import Foundation
 import SpriteKit
 
+enum Animation {
+    
+    case idle
+    case walking
+    case jumping
+    case tDamage
+}
+
 class Jeans {
     
     //Sprite for Jeans loaded as a SKTexture
@@ -45,19 +53,34 @@ class Jeans {
     //Can only jump if set to true
     var isGrounded = true
     
+    //The current animation state
+    var Currentanim: Animation = Animation.idle
+    
+    //Walking Animation Frames
+    private var playerWalkingFrames: [SKTexture] = [SKTexture(imageNamed: "walk000"),SKTexture(imageNamed: "walk001"),SKTexture(imageNamed: "walk002"),SKTexture(imageNamed: "walk003"),SKTexture(imageNamed: "walk004"),SKTexture(imageNamed: "walk005"),SKTexture(imageNamed: "walk006"),SKTexture(imageNamed: "walk007")]
+    
+    //Jumping Animation Frames
+    private var playerJumpingFrames: [SKTexture] = [SKTexture(imageNamed: "jump000"),SKTexture(imageNamed: "jump001"),SKTexture(imageNamed: "jump002"),SKTexture(imageNamed: "jump003"),SKTexture(imageNamed: "jump004"),SKTexture(imageNamed: "jump005")]
+    
+    //Idle Animation Frames
+    private var playeridleFrames: [SKTexture] = [SKTexture(imageNamed: "walk000")]
+    
+    //Taking Damage Animation Frames
+    private var playerTakingDmgFrames: [SKTexture] = [SKTexture(imageNamed: "dmg000"),SKTexture(imageNamed: "dmg001"),SKTexture(imageNamed: "dmg002"),SKTexture(imageNamed: "dmg003"),SKTexture(imageNamed: "dmg004"),SKTexture(imageNamed: "dmg005"),SKTexture(imageNamed: "dmg006"),SKTexture(imageNamed: "dmg007")]
+    
     func InitializeAttributes() {
         
         jeansSpriteNode.name = "Player"
-        jeansSpriteNode.size = CGSize(width: 75, height: 100)
+        jeansSpriteNode.size = CGSize(width: 100, height: 90)
         jeansSpriteNode.position = startPos
         let newConstraints: NSArray = [SKConstraint.zRotation(SKRange(lowerLimit: 0, upperLimit: 0))]
         jeansSpriteNode.constraints = (newConstraints as! [SKConstraint])
         jeansSpriteNode.physicsBody = SKPhysicsBody(texture: jeansSprite, size: jeansSpriteNode.size)
         jeansSpriteNode.physicsBody?.categoryBitMask = CollisionTag.player.rawValue
         jeansSpriteNode.physicsBody?.collisionBitMask = CollisionTag.platform.rawValue
-        jeansSpriteNode.physicsBody?.contactTestBitMask = CollisionTag.platform.rawValue | CollisionTag.spike.rawValue | CollisionTag.oil.rawValue | CollisionTag.water.rawValue
+        jeansSpriteNode.physicsBody?.contactTestBitMask = CollisionTag.platform.rawValue | CollisionTag.spike.rawValue | CollisionTag.oil.rawValue | CollisionTag.water.rawValue | CollisionTag.finish.rawValue
         
-        //Frame stuff
+        animatePLayer(Currentanim)
         
     }
     
@@ -97,9 +120,39 @@ class Jeans {
     func Jump() {
         //If Jeans are grounded, apply an upward force
         if(isGrounded == true) {
-            jeansSpriteNode.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 200))
+            jeansSpriteNode.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 250))
+            animatePLayer(Animation.jumping)
             isGrounded = false
         }
         
+    }
+    
+    func animatePLayer(_ anim_: Animation) {
+        
+        //Set new state
+        Currentanim = anim_
+        
+        //Change sprite to new state's animation
+        switch Currentanim {
+        case .idle:
+            jeansSpriteNode.run(SKAction.repeatForever(
+                SKAction.animate(with: playeridleFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"idle")
+            break;
+            
+        case .walking:
+            jeansSpriteNode.run(SKAction.repeatForever(
+                SKAction.animate(with: playerWalkingFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"walking")
+            break;
+            
+        case.jumping:
+            jeansSpriteNode.run(SKAction.repeatForever(
+                SKAction.animate(with: playerJumpingFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"jumping")
+            break;
+            
+        case .tDamage:
+            jeansSpriteNode.run(SKAction.repeatForever(
+                SKAction.animate(with: playerTakingDmgFrames, timePerFrame: 0.1, resize: false,restore: true)),withKey:"takingDmg")
+            break;
+        }
     }
 }

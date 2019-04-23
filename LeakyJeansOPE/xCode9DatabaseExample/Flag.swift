@@ -11,7 +11,7 @@ import SpriteKit
 
 class Flag {
     
-    //Sprite for Oil loaded as a SKTexture
+    //Sprite for Flag loaded as a SKTexture
     let flagSprite = SKTexture(imageNamed: "Flag.png")
     
     //Sprite node to be added to the scene graph

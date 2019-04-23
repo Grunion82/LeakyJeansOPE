@@ -235,6 +235,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             } //Player collides with spike
             if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Spike") {
                 playerJeans.leakLevel += 0.05
+                playerJeans.animatePLayer(Animation.tDamage)
             } //Player collides with Oil
             if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Oil") {
                 playerJeans.oilLevel += 1.0
@@ -283,10 +284,12 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
         }
         if(sender == leftArrowButton){
             playerJeans.moveLeft = true     //Player moves to the left
+            playerJeans.animatePLayer(Animation.walking)
         }
             
         if(sender == rightArrowButton) {
             playerJeans.moveRight = true    //Player move to the right
+            playerJeans.animatePLayer(Animation.walking)
         }
     }
     
@@ -294,10 +297,12 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
     @objc func buttonExit(_ sender: UIButton!) {
         if(sender == leftArrowButton){
             playerJeans.moveLeft = false    //Player no longer moving left
+            playerJeans.animatePLayer(Animation.idle)
         }
         
         if(sender == rightArrowButton) {
             playerJeans.moveRight = false   //Player no longer moving right
+            playerJeans.animatePLayer(Animation.idle)
         }
 
     }
