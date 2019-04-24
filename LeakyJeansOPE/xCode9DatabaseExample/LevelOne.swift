@@ -39,6 +39,9 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
     //Object that the player will be controlling
     var playerJeans: Jeans = Jeans()
     
+    //Enemy fan
+    var enemyFan: Fan = Fan()
+    
     //For timer
     var seconds = 120
     var sceneTimer = Timer()
@@ -140,6 +143,14 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             addChild(finishFlag.flagSpriteNode)
             //====================================================================
             
+            //Enemy fan code
+            //====================================================================
+            enemyFan.InitializeAttributes(position: CGPoint(x: 500, y: 73))
+            addChild(enemyFan.fanSpriteNode)
+            addChild(enemyFan.startNode)
+            addChild(enemyFan.endNode)
+            //====================================================================
+            
             //Left Arrow code-- initialization
             leftArrowButton.setTitle("Left Arrow", for: .normal)
             if let leftArrowButtonImg = UIImage(named: "arrowimageleft.png") {
@@ -232,6 +243,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             
             //Called before each frame is rendered
             playerJeans.UpdatePosition()
+            enemyFan.UpdatePosition()
             
             //Update Time Label
             timeLabel.text = "Time: " + String(describing: seconds)
@@ -273,6 +285,9 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             } //Player collides with End Flag
             if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Flag") {
                 EndGame(EndGameFlag.win)
+            }
+            if(contact.bodyA.node?.name == "Player" && contact.bodyB.node?.name == "Fan"){
+                playerJeans.wetness -= 0.05
             }
         }
     
