@@ -40,9 +40,8 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
     var playerJeans: Jeans = Jeans()
     
     //For timer
-    var seconds = 0
+    var seconds = 120
     var sceneTimer = Timer()
-    
     
     //Left Arrow button object
     let leftArrowButton = UIButton(frame: CGRect(x: -15, y: 275, width: 150, height: 150))
@@ -50,6 +49,8 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
     let rightArrowButton = UIButton(frame: CGRect(x: 100, y: 275, width: 150, height: 150))
     //Up Arrow button object
     let upArrowButton = UIButton(frame: CGRect(x: 600, y: 275, width: 150, height: 150))
+    //Shows how much time remains
+    let timeLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 350, height: 175))
     //Sprite Node to show player's water level
     let waterLevelNode = SKSpriteNode(color: .blue, size: CGSize(width: 125, height: 25))
     //Holds the initial width of the waterLevelNode
@@ -165,6 +166,11 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             upArrowButton.addTarget(self, action: #selector(LevelOne.buttonAction(_:)), for: .touchDown)
             self.view?.addSubview(upArrowButton)
             
+            //Time Label code-- Adding to view and initializing
+            timeLabel.center = CGPoint(x: 375, y: 50)
+            timeLabel.textAlignment = .center
+            self.view?.addSubview(timeLabel)
+            
             //Water Level Node code-- initialization
             waterLevelNode.anchorPoint = CGPoint(x: 0.5, y: 0)
             addChild(waterLevelNode)
@@ -184,11 +190,12 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
     
     override func sceneDidLoad() {
         super.sceneDidLoad()
-        sceneTimer = Timer(timeInterval: 1, target: self, selector: #selector(LevelOne.updateSceneTimer), userInfo: nil, repeats: true)
+        sceneTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(LevelOne.updateSceneTimer), userInfo: nil, repeats: true)
     }
     
     @objc func updateSceneTimer(){
-     seconds += 1
+     seconds -= 1
+
     }
     
         func touchDown(atPoint pos : CGPoint) {
@@ -222,8 +229,15 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
         
         
         override func update(_ currentTime: TimeInterval) {
+            
             //Called before each frame is rendered
             playerJeans.UpdatePosition()
+            
+            //Update Time Label
+            timeLabel.text = "Time: " + String(describing: seconds)
+            if(seconds <= 0) {
+                EndGame(EndGameFlag.lose)
+            }
             
             //Update the water level bar value
              UpdateLevelNodes()
@@ -275,20 +289,27 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    //Calculates the final score of the game
+    func CalculateScore() -> CGFloat {
+        return playerJeans.wetness * 0.6 + CGFloat(seconds) * 0.5
+    }
+    
     func EndGame(_ endCase: EndGameFlag) {
+        let finalScore = CalculateScore()
         sceneTimer.invalidate()
+        seconds = 120
         //Swap to end scene
         if let newScene = EndScene(fileNamed: "EndScene") {
             newScene.scaleMode = .aspectFill
             newScene.endCase = endCase.rawValue
-            newScene.score = playerJeans.wetness
+            newScene.score = finalScore
             let transition = SKTransition.moveIn(with: .right, duration: 0.25)
             leftArrowButton.removeFromSuperview()
             rightArrowButton.removeFromSuperview()
             upArrowButton.removeFromSuperview()
+            timeLabel.removeFromSuperview()
             self.view?.presentScene(newScene, transition: transition)
         }
-        seconds = 0
     }
     
     //Button Press
@@ -318,8 +339,6 @@ class LevelOne: SKScene, SKPhysicsContactDelegate {
             playerJeans.moveRight = false   //Player no longer moving right
             playerJeans.animatePLayer(Animation.idle)
         }
-        sceneTimer.invalidate()
-        seconds = 0
 
     }
     
