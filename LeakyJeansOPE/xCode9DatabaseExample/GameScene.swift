@@ -8,6 +8,7 @@
 
 import SpriteKit
 import GameplayKit
+import AVFoundation
 
 class GameScene: SKScene {
     
@@ -19,19 +20,48 @@ class GameScene: SKScene {
     let playButton = UIButton(frame: CGRect(x: 225, y: 145, width: 225, height: 60))
     //Options button object
     let optionsButton = UIButton(frame: CGRect(x: 260, y: 220, width: 160, height: 60))
-    
+  
+    var audioPlayer =  AVAudioPlayer()
     
     private var playerSprite = SKSpriteNode()
     private var playerWalkingFrames: [SKTexture] = []
     
+
     override func didMove(to view: SKView) {
         backgroundColor = .orange
-       
-        
+       //updated background of the game
+//        let background = SKSpriteNode(imageNamed: "background.png")
+//        background.position = CGPoint(x: 1, y: 1)
+//        background.anchorPoint = CGPoint(x: 0.5, y: 0.5)//anchor center of teh screen default
+//        background.zPosition = -1
+//        background.size = CGSize(width: size.width, height: size.height/2)
+//        addChild(background)
+        do{
+            audioPlayer = try AVAudioPlayer(contentsOf: URL.init(fileURLWithPath:Bundle.main.path(forResource: "blop", ofType: "wav")!))
+            audioPlayer.prepareToPlay()
+        }
+        catch{
+            
+            
+            print(error)
+        }
+            
         //Create the background object and give it to the SceneGraph-- Change size to be drawn in display
         let background = SKSpriteNode(imageNamed: "MainMenu.png")
         addChild(background)
         background.size = CGSize(width: size.width, height: (size.height / 2) - 250)
+        background.zPosition = -1
+        
+        // Get label node from scene and store it for use later
+        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
+        if let label = self.label {
+            label.alpha = 0.0
+            label.run(SKAction.fadeIn(withDuration: 2.0))
+        }
+
+        
+       
+
         
         //Code for PlayButton. Loading and Positioning
         playButton.setTitle("PlayButton", for: .normal)
@@ -48,22 +78,24 @@ class GameScene: SKScene {
         }
         optionsButton.addTarget(self, action: #selector(GameScene.buttonAction(_:)), for: .touchUpInside)
         self.view?.addSubview(optionsButton)
-        
-        //buildPlayer()
+        audioPlayer.play()
+        buildPlayer()
         //animatePLayer()
     }
     
+
+    
+    
     func buildPlayer() {
-        let playerAnimatedAtlas = SKTextureAtlas(named: "BearImages")
-        var walkFrames: [SKTexture] = []
+        let walkFrames: [SKTexture] = [SKTexture(imageNamed: "tile000"),SKTexture(imageNamed: "tile001"),SKTexture(imageNamed: "tile002"),SKTexture(imageNamed: "tile003"),SKTexture(imageNamed: "tile004"),SKTexture(imageNamed: "tile005"),SKTexture(imageNamed: "tile006"),SKTexture(imageNamed: "tile007"),SKTexture(imageNamed: "tile008"),SKTexture(imageNamed: "tile009"),SKTexture(imageNamed: "tile010"),SKTexture(imageNamed: "tile011"),SKTexture(imageNamed: "tile012"),SKTexture(imageNamed: "tile013"),SKTexture(imageNamed: "tile014"),SKTexture(imageNamed: "tile015")]
         
-        let numImages = playerAnimatedAtlas.textureNames.count
-        for i in 1...numImages {
-            let playerTextureName = "bear\(i)"
-            walkFrames.append(playerAnimatedAtlas.textureNamed(playerTextureName))
-        }
+
+//        let numImages = walkFrames.count
+//        for i in 1...numImages {
+//            walkFrames.append(walkFrames[i])
+//        }
         playerWalkingFrames = walkFrames
-        
+
         let firstFrameTexture = playerWalkingFrames[0]
         playerSprite = SKSpriteNode(texture: firstFrameTexture)
         playerSprite.position = CGPoint(x: frame.midX, y: frame.midY)
@@ -189,7 +221,6 @@ class GameScene: SKScene {
     
     @objc func buttonAction(_ sender: UIButton!) {
         if(sender == playButton){
-            print("play button")
             
             //Loads the LevelOne scene
             if let newScene = LevelOne(fileNamed: "LevelOne") {
@@ -201,7 +232,7 @@ class GameScene: SKScene {
             }
         }
         else if(sender == optionsButton) {
-            print("options button")
+            
         }
     }
 }
